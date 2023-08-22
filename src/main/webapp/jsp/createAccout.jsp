@@ -41,7 +41,8 @@
                   <!-- Contenido -->
                   <div class="contBody2">
                     <h4>Información de la Cuenta</h4>
-                    <div class="contLog">
+                    <form action="../LoginController?rute=saveAccount" method="POST" >
+                      <div class="contLog">
                         <div class="d-flex inputConf2">
                             <span class="m-3">Nombre de la Cuenta: </span>
                             <input type="text" class="inputConf p-2 ms-2 colorMI" id="nameCuenta" name="nameCuenta" placeholder="Nombre de la Cuenta...">
@@ -55,8 +56,8 @@
                         <input type="text" class="inputConf p-2 ms-2 colorMI" id="nameCuenta" name="nameCuenta" placeholder="Nombre de la Cuenta...">
                     </div>
                     </div>
+                    </form>
                   </div>
-
                 </div>
               </div>
               <div class="row">
