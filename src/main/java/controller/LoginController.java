@@ -37,6 +37,11 @@ public class LoginController extends HttpServlet {
 		case "logout":
 			this.logout(request, response);
 			break;
+		case "newPerson":
+			this.newPerson(request, response);
+			break;
+		case "savePerson":
+			break;
 		}
 	}
 
@@ -57,8 +62,6 @@ public class LoginController extends HttpServlet {
 			response.sendRedirect("AccountController?rute=list");
 			return;
 		} else {
-			String message = "Your username o password are incorrect";
-			request.setAttribute("message", message);
 			request.getRequestDispatcher("jsp/error.jsp").forward(request, response);
 		}
 	}
@@ -66,5 +69,18 @@ public class LoginController extends HttpServlet {
 	private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		request.getSession().invalidate();
 		response.sendRedirect("jsp/login.jsp");
+	}
+
+	private void newPerson(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.sendRedirect("jsp/register.jsp");
+	}
+
+	private void savePerson(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String name = request.getParameter("name");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		Person person = new Person(name, username, password, null);
+		FactoryDAO.getFactory().getPersonDAO().create(person);
+		response.sendRedirect("LoginController?rute=init");
 	}
 }

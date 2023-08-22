@@ -25,13 +25,13 @@
             <img src="../imgs/Usuario.png" alt="logo" class="logoUser" />
             <div class="contLog">
               <h3 class="text-center">INICIAR SESIÓN</h3>
-              <form action="../LoginController" method="POST">
+              <form action="../LoginController?rute=login" method="POST">
                 <fieldset>
                   <div class="mb-3">
                     <input
                       type="text"
                       class="form-control"
-                      name="user"
+                      name="username"
                       placeholder="Usuario..."
                     />
                   </div>
