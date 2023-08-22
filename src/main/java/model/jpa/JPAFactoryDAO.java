@@ -14,14 +14,12 @@ public class JPAFactoryDAO extends FactoryDAO {
 
 	@Override
 	public MovementDAO getMovementDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		return new JPAMovementDAO();
 	}
 
 	@Override
 	public AccountDAO getAccountDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		return new JPAAccountJPA();
 	}
 
 }

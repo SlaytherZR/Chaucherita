@@ -23,6 +23,8 @@ public class Account implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	@Column(name = "name")
+	private String name;
 	@Column(name = "number")
 	private String number;
 	@Column(name = "money")
@@ -37,11 +39,11 @@ public class Account implements Serializable {
 
 	}
 
-	public Account(String number, double money, Person owner, List<Movement> movements) {
+	public Account(String name, String number, double money, Person owner) {
+		this.name = name;
 		this.number = number;
 		this.owner = owner;
 		this.money = money;
-		this.movements = movements;
 	}
 
 	public Integer getId() {
@@ -50,6 +52,14 @@ public class Account implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getNumber() {

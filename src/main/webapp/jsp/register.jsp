@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>Registrarse</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -25,13 +25,13 @@
             <img src="../imgs/Usuario.png" alt="logo" class="logoUser" />
             <div class="contLog">
               <h3 class="text-center">REGISTRARSE</h3>
-              <form action="../LoginController" method="POST">
+              <form action="../LoginController?rute=savePerson" method="POST">
                 <fieldset>
                     <div class="mb-3">
                         <input
                           type="text"
                           class="form-control"
-                          name="nameUser"
+                          name="name"
                           placeholder="Nombre..."
                         />
                       </div>
@@ -39,7 +39,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      name="user"
+                      name="username"
                       placeholder="Usuario..."
                     />
                   </div>
