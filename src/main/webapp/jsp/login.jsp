@@ -45,9 +45,12 @@
                   </div>
                   <div class="mb-3 text-center">
                     <button class="btn btn-secondary colorBtn">Ingresar</button>
-                    <button class="btn btn-secondary ms-3 colorBtn">
+                    <!--<button class="btn btn-secondary ms-3 colorBtn" href = "../LoginController?rute=newPerson">
                       Registrarse
-                    </button>
+                    </button>  -->
+                    <a class="btn btn-secondary colorBtn"
+								href="../LoginController?rute=newPerson"
+								role="button">Registrarse</a>
                   </div>
                 </fieldset>
               </form>

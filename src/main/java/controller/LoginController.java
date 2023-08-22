@@ -41,6 +41,7 @@ public class LoginController extends HttpServlet {
 			this.newPerson(request, response);
 			break;
 		case "savePerson":
+			this.savePerson(request, response);
 			break;
 		}
 	}
