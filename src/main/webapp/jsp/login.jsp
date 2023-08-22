@@ -25,13 +25,13 @@
             <img src="../imgs/Usuario.png" alt="logo" class="logoUser" />
             <div class="contLog">
               <h3 class="text-center">INICIAR SESIÓN</h3>
-              <form action="../LoginController" method="POST">
+              <form action="../LoginController?rute=login" method="POST">
                 <fieldset>
                   <div class="mb-3">
                     <input
                       type="text"
                       class="form-control"
-                      name="user"
+                      name="username"
                       placeholder="Usuario..."
                     />
                   </div>
@@ -45,9 +45,12 @@
                   </div>
                   <div class="mb-3 text-center">
                     <button class="btn btn-secondary colorBtn">Ingresar</button>
-                    <button class="btn btn-secondary ms-3 colorBtn">
+                    <!--<button class="btn btn-secondary ms-3 colorBtn" href = "../LoginController?rute=newPerson">
                       Registrarse
-                    </button>
+                    </button>  -->
+                    <a class="btn btn-secondary colorBtn"
+								href="../LoginController?rute=newPerson"
+								role="button">Registrarse</a>
                   </div>
                 </fieldset>
               </form>

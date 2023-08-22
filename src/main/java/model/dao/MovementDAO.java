@@ -6,7 +6,7 @@ import java.util.List;
 import model.entities.Account;
 import model.entities.Category;
 import model.entities.Movement;
-import model.entities.Category;
+import model.entities.Person;
 
 public interface MovementDAO extends GenericDAO<Movement, Integer> {
 
@@ -16,9 +16,11 @@ public interface MovementDAO extends GenericDAO<Movement, Integer> {
 
 	public void transfer(Movement movement, Account destination);
 
-	public List<Movement> getByCategory(Category category);
-
 	public List<Movement> getByAccount(Account account);
+	
+	public List<Movement> getByPerson(Person person);
 
-	public List<Movement> getByDate(Date date);
+	public List<Movement> getByCategoryAndPerson(Category category, Person person);
+
+	public List<Movement> getByDateAndPerson(Date date, Person person);
 }
