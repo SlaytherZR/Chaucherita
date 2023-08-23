@@ -10,21 +10,20 @@
             rel="stylesheet"
             integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
             crossorigin="anonymous"/>
-    <!--<link
+    <link
           rel="stylesheet"
           href="${pageContext.request.contextPath}/css/styles.css"
-        /> -->
-    <link rel="stylesheet" href="../styles/styles.css"/>
+        />
     <script>
         function toggleSelect() {
             var selectElement = document.getElementById("selectTransf");
             var radioElement = document.getElementById("radioTransferencia ");
-
-            selectElement.disabled = !radioElement.checked;
-        }
-    </script>
+		        selectElement.disabled = !radioElement.checked;
+	}
+</script>
 </head>
 <body>
+
 <div class="container-fluid ">
     <div class="row">
         <div class="col-2 d-flex align-items-center justify-content-center colorMI border border-black full-height">
@@ -93,17 +92,10 @@
                                                                                    placeholder="Digite la cantidad...">
                                     </div>
 
-                                    <div class="d-flex inputConf2">
-                                        <div class="row align-items-center">
-                                            <span class="col m-2">Cuenta de Destino: </span>
-                                            <div class=" col d-flex align-items-center">
-                                                <c:forEach items="${accounts}" var="account">
-                                                    <select class="col-12" id="selectTransf" disabled>
-                                                        <option value="${account.id}">${account.name}</option>
-                                                    </select>
-                                                </c:forEach>
-                                            </div>
-                                        </div>
+										<div class="d-flex inputConf2">
+											<div class="row align-items-center">
+												<span class="col m-2">Cuenta de Destino: </span>
+												<div class=" col d-flex align-items-center">
 
                                     </div>
                                     <div class="d-flex inputConf2">

@@ -47,7 +47,7 @@ public class AccountManagerController extends HttpServlet {
 			this.newMovement(request, response);
 			break;
 		case "saveMovement":
-			this.saveAccount(request, response);
+			this.saveMovement(request, response);
 			break;
 		case "newAccount":
 			this.newAccount(request, response);
@@ -93,14 +93,17 @@ public class AccountManagerController extends HttpServlet {
 		HttpSession session = request.getSession();
 		Person authenticatedPerson = (Person) session.getAttribute("userLoggedIn");
 		request.setAttribute("userLoggedIn", authenticatedPerson);
-		request.getRequestDispatcher("jsp/newmovement.jsp").forward(request, response);
+		request.setAttribute("accounts", authenticatedPerson.getAccounts());
+		request.getRequestDispatcher("jsp/createMovement.jsp").forward(request, response);
 	}
 
 	private void saveMovement(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		double amount = Double.parseDouble(request.getParameter("amount"));
 		String category = request.getParameter("category");
 		int idAccount = Integer.parseInt(request.getParameter("idAccount"));
-		Account account = FactoryDAO.getFactory().getAccountDAO().getById(idAccount);
+//		Account account = FactoryDAO.getFactory().getAccountDAO().getById(idAccount);
+		//Probar crear movimiento
+		Account account = FactoryDAO.getFactory().getAccountDAO().getById(1);
 
 		Movement movement = new Movement(amount, account);
 
@@ -114,7 +117,7 @@ public class AccountManagerController extends HttpServlet {
 			FactoryDAO.getFactory().getMovementDAO().transfer(movement, destinationAccount);
 		}
 
-		response.sendRedirect("AccountManagerController?rute=listAccounts");
+		response.sendRedirect("AccountManagerController?rute=newMovement");
 	}
 
 	private void newAccount(HttpServletRequest request, HttpServletResponse response)
@@ -168,7 +171,8 @@ public class AccountManagerController extends HttpServlet {
 		request.getRequestDispatcher("jsp/listmovements.jsp").forward(request, response);
 	}
 
-	private void listByDate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void listByDate(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Person authenticatedPerson = (Person) session.getAttribute("userLoggedIn");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
