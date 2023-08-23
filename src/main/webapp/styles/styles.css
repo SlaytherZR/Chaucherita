@@ -76,3 +76,11 @@ body{
 .inputConf2 input {
     flex-grow: 1;
   }
+
+.no-underline{
+    text-decoration: none;
+}
+
+.no-underline:hover{
+    color: #DED0C6;
+}
