@@ -27,6 +27,8 @@ public class Movement implements Serializable {
 	private double amount;
 	@Column(name = "category")
 	private Category category;
+	@Column(name = "description")
+	private String description;
 	@Temporal(TemporalType.DATE)
 	@Column(name = "date")
 	private Date date;
@@ -38,9 +40,10 @@ public class Movement implements Serializable {
 
 	}
 
-	public Movement(double amount, Account account) {
+	public Movement(double amount, Account account, String description) {
 		this.amount = amount;
 		this.account = account;
+		this.description = description;
 		this.date = new Date();
 	}
 
@@ -74,6 +77,14 @@ public class Movement implements Serializable {
 
 	public void setAccount(Account account) {
 		this.account = account;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Date getDate() {

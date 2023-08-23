@@ -59,11 +59,7 @@ public class LoginController extends HttpServlet {
 		if (authenticatedPerson != null) {
 			HttpSession session = request.getSession();
 			session.setAttribute("userLoggedIn", authenticatedPerson);
-
-//			response.sendRedirect("AccountController?rute=list");
-			//Probar crear Movimiento
-			request.setAttribute("accounts", authenticatedPerson.getAccounts());
-			request.getRequestDispatcher("jsp/createMovement.jsp").forward(request, response);
+			response.sendRedirect("AccountManagerController?rute=listAccounts");
 			return;
 		} else {
 			request.getRequestDispatcher("jsp/error.jsp").forward(request, response);

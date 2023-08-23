@@ -100,12 +100,11 @@ public class AccountManagerController extends HttpServlet {
 	private void saveMovement(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		double amount = Double.parseDouble(request.getParameter("amount"));
 		String category = request.getParameter("category");
+		String description = request.getParameter("description");
 		int idAccount = Integer.parseInt(request.getParameter("idAccount"));
-//		Account account = FactoryDAO.getFactory().getAccountDAO().getById(idAccount);
-		//Probar crear movimiento
-		Account account = FactoryDAO.getFactory().getAccountDAO().getById(1);
+		Account account = FactoryDAO.getFactory().getAccountDAO().getById(idAccount);
 
-		Movement movement = new Movement(amount, account);
+		Movement movement = new Movement(amount, account, description);
 
 		if (category.equals("Ingreso")) {
 			FactoryDAO.getFactory().getMovementDAO().addIncome(movement);
@@ -116,8 +115,7 @@ public class AccountManagerController extends HttpServlet {
 			Account destinationAccount = FactoryDAO.getFactory().getAccountDAO().getById(idDestinationAccount);
 			FactoryDAO.getFactory().getMovementDAO().transfer(movement, destinationAccount);
 		}
-
-		response.sendRedirect("AccountManagerController?rute=newMovement");
+		response.sendRedirect("AccountManagerController?rute=listAccounts");
 	}
 
 	private void newAccount(HttpServletRequest request, HttpServletResponse response)
@@ -134,11 +132,8 @@ public class AccountManagerController extends HttpServlet {
 		String name = request.getParameter("name");
 		String nummber = request.getParameter("number");
 		double money = Double.parseDouble(request.getParameter("money"));
-
 		Account account = new Account(name, nummber, money, authenticatedPerson);
-
 		FactoryDAO.getFactory().getAccountDAO().create(account);
-
 		response.sendRedirect("AccountManagerController?rute=listAccounts");
 	}
 
@@ -149,10 +144,8 @@ public class AccountManagerController extends HttpServlet {
 		Category category = Category.valueOf(request.getParameter("category").toUpperCase());
 		ArrayList<Movement> movements = (ArrayList<Movement>) FactoryDAO.getFactory().getMovementDAO()
 				.getByCategoryAndPerson(category, authenticatedPerson);
-
 		request.setAttribute("userLoggedIn", authenticatedPerson);
 		request.setAttribute("movements", movements);
-
 		request.getRequestDispatcher("jsp/listmovements.jsp").forward(request, response);
 	}
 
@@ -164,10 +157,8 @@ public class AccountManagerController extends HttpServlet {
 		Account account = FactoryDAO.getFactory().getAccountDAO().getById(idAccount);
 		ArrayList<Movement> movements = (ArrayList<Movement>) FactoryDAO.getFactory().getMovementDAO()
 				.getByAccount(account);
-
 		request.setAttribute("userLoggedIn", authenticatedPerson);
 		request.setAttribute("movements", movements);
-
 		request.getRequestDispatcher("jsp/listmovements.jsp").forward(request, response);
 	}
 
@@ -185,10 +176,8 @@ public class AccountManagerController extends HttpServlet {
 		}
 		ArrayList<Movement> movements = (ArrayList<Movement>) FactoryDAO.getFactory().getMovementDAO()
 				.getByDateAndPerson(date, authenticatedPerson);
-
 		request.setAttribute("userLoggedIn", authenticatedPerson);
 		request.setAttribute("movements", movements);
-
 		request.getRequestDispatcher("jsp/listmovements.jsp").forward(request, response);
 	}
 

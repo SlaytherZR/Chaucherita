@@ -94,4 +94,10 @@ public class Account implements Serializable {
 		this.movements = movements;
 	}
 
+	@Override
+	public String toString() {
+		return "Account [id=" + id + ", name=" + name + ", number=" + number + ", money=" + money + ", owner=" + owner
+				+ ", movements=" + movements + "]";
+	}
+
 }
