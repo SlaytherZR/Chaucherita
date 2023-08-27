@@ -29,7 +29,7 @@ public class Account implements Serializable {
 	private String number;
 	@Column(name = "money")
 	private double money;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "owner")
 	private Person owner;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
@@ -92,12 +92,6 @@ public class Account implements Serializable {
 
 	public void setMovements(List<Movement> movements) {
 		this.movements = movements;
-	}
-
-	@Override
-	public String toString() {
-		return "Account [id=" + id + ", name=" + name + ", number=" + number + ", money=" + money + ", owner=" + owner
-				+ ", movements=" + movements + "]";
 	}
 
 }

@@ -15,7 +15,7 @@ public class testAjusteCuenta {
 
 		// Ajustar la cuenta
 		double nuevoSaldo = 1500.0; // Cambia este valor al saldo deseado
-		FactoryDAO.getFactory().getAccountDAO().ajustarCuenta(nuevoSaldo, cuentaEjemplo);
+		FactoryDAO.getFactory().getAccountDAO().accountConfig(nuevoSaldo, cuentaEjemplo);
 
 		// Imprimir el estado de la cuenta después del ajuste
 		System.out.println("Estado de la cuenta después del ajuste:");

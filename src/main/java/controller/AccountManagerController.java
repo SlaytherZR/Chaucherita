@@ -1,10 +1,8 @@
 package controller;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,20 +35,14 @@ public class AccountManagerController extends HttpServlet {
 		String rute = request.getParameter("rute");
 
 		switch (rute) {
-		case "listAccounts":
-			this.listAccounts(request, response);
+		case "dashboard":
+			this.showDashboard(request, response);
 			break;
 		case "listMovements":
 			this.listMovements(request, response);
 			break;
-		case "newMovement":
-			this.newMovement(request, response);
-			break;
 		case "saveMovement":
 			this.saveMovement(request, response);
-			break;
-		case "newAccount":
-			this.newAccount(request, response);
 			break;
 		case "saveAccount":
 			this.saveAccount(request, response);
@@ -61,40 +53,32 @@ public class AccountManagerController extends HttpServlet {
 		case "listByAccount":
 			this.listByAccount(request, response);
 			break;
-		case "listByDate":
-			this.listByDate(request, response);
+		case "listByMonth":
+			this.listByMonth(request, response);
 			break;
 		}
 	}
 
-	private void listAccounts(HttpServletRequest request, HttpServletResponse response)
+	private void showDashboard(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Person authenticatedPerson = (Person) session.getAttribute("userLoggedIn");
-		ArrayList<Account> accounts = (ArrayList<Account>) authenticatedPerson.getAccounts();
+		List<Account> accounts =  FactoryDAO.getFactory().getAccountDAO().getByPerson(authenticatedPerson);
+		System.out.println("NUMERO DE CUENTAS -------" + accounts.size());
 		request.setAttribute("userLoggedIn", authenticatedPerson);
 		request.setAttribute("accounts", accounts);
-		request.getRequestDispatcher("jsp/listaccounts.jsp").forward(request, response);
+		request.getRequestDispatcher("view/dashboard.jsp").forward(request, response);
 	}
 
 	private void listMovements(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Person authenticatedPerson = (Person) session.getAttribute("userLoggedIn");
-		ArrayList<Movement> movements = (ArrayList<Movement>) FactoryDAO.getFactory().getMovementDAO()
+		List<Movement> movements = FactoryDAO.getFactory().getMovementDAO()
 				.getByPerson(authenticatedPerson);
 		request.setAttribute("userLoggedIn", authenticatedPerson);
 		request.setAttribute("movements", movements);
 		request.getRequestDispatcher("jsp/listmovements.jsp").forward(request, response);
-	}
-
-	private void newMovement(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
-		HttpSession session = request.getSession();
-		Person authenticatedPerson = (Person) session.getAttribute("userLoggedIn");
-		request.setAttribute("userLoggedIn", authenticatedPerson);
-		request.setAttribute("accounts", authenticatedPerson.getAccounts());
-		request.getRequestDispatcher("jsp/createMovement.jsp").forward(request, response);
 	}
 
 	private void saveMovement(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -118,23 +102,17 @@ public class AccountManagerController extends HttpServlet {
 		response.sendRedirect("AccountManagerController?rute=listAccounts");
 	}
 
-	private void newAccount(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
-		HttpSession session = request.getSession();
-		Person authenticatedPerson = (Person) session.getAttribute("userLoggedIn");
-		request.setAttribute("userLoggedIn", authenticatedPerson);
-		request.getRequestDispatcher("jsp/createAccount.jsp").forward(request, response);
-	}
-
 	private void saveAccount(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
 		Person authenticatedPerson = (Person) session.getAttribute("userLoggedIn");
+		
 		String name = request.getParameter("name");
-		String nummber = request.getParameter("number");
+		String number = request.getParameter("number");
 		double money = Double.parseDouble(request.getParameter("money"));
-		Account account = new Account(name, nummber, money, authenticatedPerson);
+		
+		Account account = new Account(name, number, money, authenticatedPerson);
 		FactoryDAO.getFactory().getAccountDAO().create(account);
-		response.sendRedirect("AccountManagerController?rute=listAccounts");
+		response.sendRedirect("AccountManagerController?rute=dashboard");
 	}
 
 	private void listByCategory(HttpServletRequest request, HttpServletResponse response)
@@ -162,20 +140,13 @@ public class AccountManagerController extends HttpServlet {
 		request.getRequestDispatcher("jsp/listmovements.jsp").forward(request, response);
 	}
 
-	private void listByDate(HttpServletRequest request, HttpServletResponse response)
+	private void listByMonth(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Person authenticatedPerson = (Person) session.getAttribute("userLoggedIn");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = null;
-		try {
-			date = sdf.parse(request.getParameter("date"));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		int month = Integer.parseInt(request.getParameter("month"));
 		ArrayList<Movement> movements = (ArrayList<Movement>) FactoryDAO.getFactory().getMovementDAO()
-				.getByDateAndPerson(date, authenticatedPerson);
+				.getByMonthAndPerson(month, authenticatedPerson);
 		request.setAttribute("userLoggedIn", authenticatedPerson);
 		request.setAttribute("movements", movements);
 		request.getRequestDispatcher("jsp/listmovements.jsp").forward(request, response);

@@ -47,7 +47,7 @@ public class LoginController extends HttpServlet {
 	}
 
 	private void init(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.sendRedirect("jsp/login.jsp");
+		response.sendRedirect("view/login.html");
 	}
 
 	private void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -59,20 +59,20 @@ public class LoginController extends HttpServlet {
 		if (authenticatedPerson != null) {
 			HttpSession session = request.getSession();
 			session.setAttribute("userLoggedIn", authenticatedPerson);
-			response.sendRedirect("AccountManagerController?rute=listAccounts");
+			response.sendRedirect("AccountManagerController?rute=dashboard");
 			return;
 		} else {
-			request.getRequestDispatcher("jsp/error.jsp").forward(request, response);
+			System.out.println("NO SE ENCONTRO LA PERSONA");
 		}
 	}
 
 	private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		request.getSession().invalidate();
-		response.sendRedirect("jsp/login.jsp");
+		response.sendRedirect("view/login.html");
 	}
 
 	private void newPerson(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.sendRedirect("jsp/register.jsp");
+		response.sendRedirect("view/register.html");
 	}
 
 	private void savePerson(HttpServletRequest request, HttpServletResponse response) throws IOException {

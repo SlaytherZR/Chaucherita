@@ -1,6 +1,5 @@
 package model.jpa;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -11,7 +10,6 @@ import model.entities.Account;
 import model.entities.Category;
 import model.entities.Movement;
 import model.entities.Person;
-import model.entities.Category;
 
 public class JPAMovementDAO extends JPAGenericDAO<Movement, Integer> implements MovementDAO {
 
@@ -54,7 +52,7 @@ public class JPAMovementDAO extends JPAGenericDAO<Movement, Integer> implements 
 
 	@Override
 	public List<Movement> getByPerson(Person person) {
-		String sentence = "SELECT m FROM Movement WHERE m.account IN (SELECT a FROM Account a WHERE a.owner = :person)";
+		String sentence = "SELECT m FROM Movement m WHERE m.account IN (SELECT a FROM Account a WHERE a.owner = :person)";
 		Query query = entityManager.createQuery(sentence);
 		query.setParameter("person", person);
 		return query.getResultList();
@@ -62,7 +60,7 @@ public class JPAMovementDAO extends JPAGenericDAO<Movement, Integer> implements 
 
 	@Override
 	public List<Movement> getByAccount(Account account) {
-		String sentence = "SELECT m FROM Movement WHERE m.account = :account";
+		String sentence = "SELECT m FROM Movement m WHERE m.account = :account";
 		Query query = entityManager.createQuery(sentence);
 		query.setParameter("account", account);
 		return query.getResultList();
@@ -70,7 +68,7 @@ public class JPAMovementDAO extends JPAGenericDAO<Movement, Integer> implements 
 
 	@Override
 	public List<Movement> getByCategoryAndPerson(Category category, Person person) {
-		String sentence = "SELECT m FROM Movement WHERE m.account IN (SELECT a FROM Account a WHERE a.owner = :person) AND m.category = :category";
+		String sentence = "SELECT m FROM Movement m WHERE m.account IN (SELECT a FROM Account a WHERE a.owner = :person) AND m.category = :category";
 		Query query = entityManager.createQuery(sentence);
 		query.setParameter("person", person);
 		query.setParameter("category", category);
@@ -78,11 +76,11 @@ public class JPAMovementDAO extends JPAGenericDAO<Movement, Integer> implements 
 	}
 
 	@Override
-	public List<Movement> getByDateAndPerson(Date date, Person person) {
-		String sentence = "SELECT m FROM Movement WHERE m.account IN (SELECT a FROM Account a WHERE a.owner = :person) AND m.date = :date";
+	public List<Movement> getByMonthAndPerson(int month, Person person) {
+		String sentence = "SELECT m FROM Movement m WHERE m.account IN (SELECT a FROM Account a WHERE a.owner = :person) AND FUNCTION('MONTH', m.date) = :month";
 		Query query = entityManager.createQuery(sentence);
 		query.setParameter("person", person);
-		query.setParameter("date", date);
+		query.setParameter("month", month);
 		return query.getResultList();
 	}
 
