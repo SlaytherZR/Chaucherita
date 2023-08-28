@@ -214,6 +214,10 @@
 								class="form-check-label" for="flexRadioDefault3">
 								Transferencia</label>
 						</div>
+						<p>
+							ID DE LA CUENTA ACTUAL:
+							<c:out value="${accountId}" />
+						</p>
 						<div class="input-group mb-3" id="tranfer"
 							style="visibility: hidden;">
 							<select name="idDestinationAccount" class="form-control">
@@ -224,8 +228,6 @@
 										<option value="${account.id}">${account.name}</option>>
 									</c:if>
 								</c:forEach>
-
-
 							</select>
 						</div>
 						<div class="modal-footer">
@@ -312,5 +314,54 @@
 
 				});
 	</script>
+	<script>
+		$(document)
+				.ready(
+						function() {
+							$('.btn-primary[data-target="#exampleModal2"]')
+									.on(
+											'click',
+											function() {
+												var accountId = $(this).data(
+														'id');
+												$('#accountId').val(accountId);
+												$('#exampleModal2').modal(
+														'show');
+
+												// Enviar el valor al servidor usando AJAX
+												$
+														.ajax({
+															type : "GET", // O "GET" según tus necesidades
+															url : "AccountManagerController?rute=dashboard", // Cambia esto por la URL correcta
+															data : {
+																accountId : accountId
+															},
+															success : function(
+																	response) {
+																console
+																		.log(response); // Manejar la respuesta del servidor si es necesario
+															},
+															error : function(
+																	error) {
+																console
+																		.error(error); // Manejar el error si es necesario
+															}
+														});
+											});
+
+							$('input[name="flexRadioDefault"]').on(
+									'change',
+									function() {
+										if (this.id === 'flexRadioDefault3') {
+											$('#tranfer').css('visibility',
+													'visible');
+										} else {
+											$('#tranfer').css('visibility',
+													'hidden');
+										}
+									});
+						});
+	</script>
+
 </body>
 </html>

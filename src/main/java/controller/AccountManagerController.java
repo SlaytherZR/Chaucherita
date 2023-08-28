@@ -63,9 +63,17 @@ public class AccountManagerController extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Person authenticatedPerson = (Person) session.getAttribute("userLoggedIn");
+
+		if (request.getParameter("accountId") != null) {
+			int idAccount = Integer.parseInt(request.getParameter("accountId"));
+			System.out.println("ID DE LA CUENTA DE ORIGEN ---------- " + idAccount);
+			request.setAttribute("accountId", idAccount);
+		}
+
 		List<Account> accounts = FactoryDAO.getFactory().getAccountDAO().getByPerson(authenticatedPerson);
 		request.setAttribute("userLoggedIn", authenticatedPerson);
 		request.setAttribute("accounts", accounts);
+
 		request.getRequestDispatcher("view/dashboard.jsp").forward(request, response);
 	}
 

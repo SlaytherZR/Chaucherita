@@ -43,13 +43,15 @@ public class JPAMovementDAO extends JPAGenericDAO<Movement, Integer> implements 
 
 	@Override
 	public void transfer(Movement movement, Account destination) {
-
+//Add transacrtion
 		if (movement.getAmount() <= movement.getAccount().getMoney()) {
-			this.addExpense(movement);
+			Movement expenseMovement = new Movement(movement.getAmount(), movement.getAccount(),
+					movement.getDescription());
+			this.addExpense(expenseMovement);
 
-			Movement movementIncome = movement;
-			movementIncome.setAccount(destination);
-			this.addIncome(movementIncome);
+			Movement incomeMovement = new Movement(movement.getAmount(), destination, movement.getDescription());
+			this.addIncome(incomeMovement);
+
 		}
 	}
 
