@@ -47,28 +47,32 @@ public class LoginController extends HttpServlet {
 	}
 
 	private void init(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.sendRedirect("view/login.html");
+		response.sendRedirect("view/login.jsp");
 	}
 
 	private void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 
-		Person authenticatedPerson = FactoryDAO.getFactory().getPersonDAO().allow(username, password);
-
-		if (authenticatedPerson != null) {
-			HttpSession session = request.getSession();
-			session.setAttribute("userLoggedIn", authenticatedPerson);
-			response.sendRedirect("AccountManagerController?rute=dashboard");
-			return;
-		} else {
-			System.out.println("NO SE ENCONTRO LA PERSONA");
+		try {
+			Person authenticatedPerson = FactoryDAO.getFactory().getPersonDAO().allow(username, password);
+			if (authenticatedPerson != null) {
+				HttpSession session = request.getSession();
+				session.setAttribute("userLoggedIn", authenticatedPerson);
+				response.sendRedirect("AccountManagerController?rute=dashboard");
+				return;
+			}
+		} catch (Exception e) {
+			String errorMessage = "El usuario o contraseña es incorrecata";
+			request.setAttribute("errorMessage", errorMessage);
+			request.getRequestDispatcher("LoginController?rute=init").forward(request, response);
 		}
+
 	}
 
 	private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		request.getSession().invalidate();
-		response.sendRedirect("view/login.html");
+		response.sendRedirect("view/login.jsp");
 	}
 
 	private void newPerson(HttpServletRequest request, HttpServletResponse response) throws IOException {

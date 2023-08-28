@@ -63,8 +63,7 @@ public class AccountManagerController extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Person authenticatedPerson = (Person) session.getAttribute("userLoggedIn");
-		List<Account> accounts =  FactoryDAO.getFactory().getAccountDAO().getByPerson(authenticatedPerson);
-		System.out.println("NUMERO DE CUENTAS -------" + accounts.size());
+		List<Account> accounts = FactoryDAO.getFactory().getAccountDAO().getByPerson(authenticatedPerson);
 		request.setAttribute("userLoggedIn", authenticatedPerson);
 		request.setAttribute("accounts", accounts);
 		request.getRequestDispatcher("view/dashboard.jsp").forward(request, response);
@@ -74,18 +73,19 @@ public class AccountManagerController extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Person authenticatedPerson = (Person) session.getAttribute("userLoggedIn");
-		List<Movement> movements = FactoryDAO.getFactory().getMovementDAO()
-				.getByPerson(authenticatedPerson);
+		List<Movement> movements = FactoryDAO.getFactory().getMovementDAO().getByPerson(authenticatedPerson);
+		List<Account> accounts = FactoryDAO.getFactory().getAccountDAO().getByPerson(authenticatedPerson);
 		request.setAttribute("userLoggedIn", authenticatedPerson);
 		request.setAttribute("movements", movements);
-		request.getRequestDispatcher("jsp/listmovements.jsp").forward(request, response);
+		request.setAttribute("accounts", accounts);
+		request.getRequestDispatcher("view/movements.jsp").forward(request, response);
 	}
 
 	private void saveMovement(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		double amount = Double.parseDouble(request.getParameter("amount"));
 		String category = request.getParameter("category");
 		String description = request.getParameter("description");
-		int idAccount = Integer.parseInt(request.getParameter("idAccount"));
+		int idAccount = Integer.parseInt(request.getParameter("accountId"));
 		Account account = FactoryDAO.getFactory().getAccountDAO().getById(idAccount);
 
 		Movement movement = new Movement(amount, account, description);
@@ -99,17 +99,17 @@ public class AccountManagerController extends HttpServlet {
 			Account destinationAccount = FactoryDAO.getFactory().getAccountDAO().getById(idDestinationAccount);
 			FactoryDAO.getFactory().getMovementDAO().transfer(movement, destinationAccount);
 		}
-		response.sendRedirect("AccountManagerController?rute=listAccounts");
+		response.sendRedirect("AccountManagerController?rute=dashboard");
 	}
 
 	private void saveAccount(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
 		Person authenticatedPerson = (Person) session.getAttribute("userLoggedIn");
-		
+
 		String name = request.getParameter("name");
 		String number = request.getParameter("number");
 		double money = Double.parseDouble(request.getParameter("money"));
-		
+
 		Account account = new Account(name, number, money, authenticatedPerson);
 		FactoryDAO.getFactory().getAccountDAO().create(account);
 		response.sendRedirect("AccountManagerController?rute=dashboard");
@@ -120,36 +120,42 @@ public class AccountManagerController extends HttpServlet {
 		HttpSession session = request.getSession();
 		Person authenticatedPerson = (Person) session.getAttribute("userLoggedIn");
 		Category category = Category.valueOf(request.getParameter("category").toUpperCase());
-		ArrayList<Movement> movements = (ArrayList<Movement>) FactoryDAO.getFactory().getMovementDAO()
-				.getByCategoryAndPerson(category, authenticatedPerson);
+		List<Movement> movements = FactoryDAO.getFactory().getMovementDAO().getByCategoryAndPerson(category,
+				authenticatedPerson);
+		List<Account> accounts = FactoryDAO.getFactory().getAccountDAO().getByPerson(authenticatedPerson);
 		request.setAttribute("userLoggedIn", authenticatedPerson);
+		request.setAttribute("accounts", accounts);
 		request.setAttribute("movements", movements);
-		request.getRequestDispatcher("jsp/listmovements.jsp").forward(request, response);
+		request.getRequestDispatcher("view/movements.jsp").forward(request, response);
 	}
 
 	private void listByAccount(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Person authenticatedPerson = (Person) session.getAttribute("userLoggedIn");
-		int idAccount = Integer.parseInt(request.getParameter("idAccount"));
+		int idAccount = Integer.parseInt(request.getParameter("account"));
 		Account account = FactoryDAO.getFactory().getAccountDAO().getById(idAccount);
-		ArrayList<Movement> movements = (ArrayList<Movement>) FactoryDAO.getFactory().getMovementDAO()
-				.getByAccount(account);
+		List<Movement> movements = FactoryDAO.getFactory().getMovementDAO().getByAccount(account);
+		List<Account> accounts = FactoryDAO.getFactory().getAccountDAO().getByPerson(authenticatedPerson);
 		request.setAttribute("userLoggedIn", authenticatedPerson);
+		request.setAttribute("accounts", accounts);
 		request.setAttribute("movements", movements);
-		request.getRequestDispatcher("jsp/listmovements.jsp").forward(request, response);
+		request.getRequestDispatcher("view/movements.jsp").forward(request, response);
 	}
 
 	private void listByMonth(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Person authenticatedPerson = (Person) session.getAttribute("userLoggedIn");
+
 		int month = Integer.parseInt(request.getParameter("month"));
-		ArrayList<Movement> movements = (ArrayList<Movement>) FactoryDAO.getFactory().getMovementDAO()
-				.getByMonthAndPerson(month, authenticatedPerson);
+		List<Movement> movements = FactoryDAO.getFactory().getMovementDAO().getByMonthAndPerson(month,
+				authenticatedPerson);
+		List<Account> accounts = FactoryDAO.getFactory().getAccountDAO().getByPerson(authenticatedPerson);
 		request.setAttribute("userLoggedIn", authenticatedPerson);
+		request.setAttribute("accounts", accounts);
 		request.setAttribute("movements", movements);
-		request.getRequestDispatcher("jsp/listmovements.jsp").forward(request, response);
+		request.getRequestDispatcher("view/movements.jsp").forward(request, response);
 	}
 
 }
