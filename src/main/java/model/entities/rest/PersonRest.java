@@ -22,6 +22,7 @@ public class PersonRest {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Person> getPersons() {
 		return FactoryDAO.getFactory().getPersonDAO().getAll();
+		
 	}
 
 	@GET
