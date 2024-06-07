@@ -1,6 +1,5 @@
 Aquí tienes el archivo `README.md` con la información actualizada sobre la conexión a la base de datos utilizando XAMPP:
 
-```markdown
 # Chaucherita
 
 ## Descripción
@@ -40,22 +39,10 @@ git clone https://github.com/SlaytherZR/Chaucherita.git
 CREATE DATABASE chaucherita;
 ```
 
-4. Importar el esquema de la base de datos:
-
+4. Configurar archivo persistence.xml
 ```sh
-mysql -u tu-usuario -p chaucherita < db/schema.sql
-```
+src/main/java/META-INF/persistence.xml```
 
-### Paso 3: Configurar el archivo `application.properties`
-
-En el directorio `src/main/resources`, editar el archivo `application.properties` con los detalles de la base de datos:
-
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/chaucherita
-spring.datasource.username=tu-usuario
-spring.datasource.password=tu-contraseña
-spring.jpa.hibernate.ddl-auto=update
-```
 
 ### Paso 4: Compilar y ejecutar la aplicación
 
